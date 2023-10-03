@@ -1,0 +1,13 @@
+@startuml
+!theme cerulean
+Client -> Broker: PUBLISH(pktid=1, topic=$file/[COMMAND])
+Broker -> "$file/responses": PUBLISH $file/responses
+note right
+{
+  "command": "$file/[COMMAND]"
+  "status": 0,
+  "packet_id": 1
+}
+end note
+Broker --> Client: PUBACK(pktid=1, rc=0x00)
+@enduml

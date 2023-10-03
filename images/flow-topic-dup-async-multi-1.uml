@@ -1,0 +1,53 @@
+@startuml
+!theme cerulean
+Client -> Broker: PUBLISH(pktid=1, topic=$file/[COMMAND])
+note right
+Async operation
+end note
+Client -> Broker: PUBLISH(pktid=2, topic=$file/[COMMAND])
+note right
+Async operation
+end note
+Client -> Broker: PUBLISH(pktid=3, topic=$file/[COMMAND])
+note right
+Async operation
+end note
+
+
+Broker -> "$file/responses": PUBLISH $file/responses
+note left
+Async operation end
+end note
+note right
+{
+  "command": "$file/[COMMAND]"
+  "status": 0,
+  "packet_id": 1
+}
+end note
+Broker --> Client: PUBACK(pktid=1, rc=0)
+Broker -> "$file/responses": PUBLISH $file/responses
+note left
+Async operation end
+end note
+note right
+{
+  "command": "$file/[COMMAND]"
+  "status": 0,
+  "packet_id": 2
+}
+end note
+Broker --> Client: PUBACK(pktid=2, rc=0)
+Broker -> "$file/responses": PUBLISH $file/responses
+note left
+Async operation end
+end note
+note right
+{
+  "command": "$file/[COMMAND]"
+  "status": 0,
+  "packet_id": 3
+}
+end note
+Broker --> Client: PUBACK(pktid=3, rc=0)
+@enduml

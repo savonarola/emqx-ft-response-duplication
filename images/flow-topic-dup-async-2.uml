@@ -1,0 +1,23 @@
+@startuml
+!theme cerulean
+Client -> Broker: PUBLISH(pktid=1, topic=$file/[COMMAND])
+note right
+Long async operation start
+e.g. file assemble
+end note
+Broker --> Client: PUBACK(pktid=1, rc=0)
+Client -> Broker: PUBLISH(pktid=2, topic=...)
+Broker --> Client: PUBACK(pktid=2, rc=...)
+Broker -> "$file/responses": PUBLISH $file/responses
+note left
+Long async operation end
+e.g. unsuccessful
+end note
+note right
+{
+  "command": "$file/[COMMAND]"
+  "status": 1,
+  "packet_id": 1
+}
+end note
+@enduml
